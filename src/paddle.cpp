@@ -3,20 +3,25 @@
 
 Ikah::Paddle::Paddle(int screenWidth, int screenHeight)
 {
+    this->screenWidth = screenWidth;
+    this->screenHeight = screenHeight;
+
+    paddleWidth = screenWidth / 10;
+    paddleHeight = paddleWidth / 4;
+
     aPressed = false;
     dPressed = false;
 
-    position.x = (screenWidth / 2) - (PADDLE_WIDTH / 2);
-    position.y = screenHeight - (PADDLE_HEIGHT * 4);
+    position.x = (screenWidth / 2) - (paddleWidth / 2);
+    position.y = screenHeight - (paddleHeight * 4);
 
     velocity = sf::Vector2f(0, 0);
 
-    this->screenWidth = screenWidth;
-    this->screenHeight = screenHeight;
-    paddle.setFillColor(sf::Color(FOREGROUND_COLOR));
-    paddle.setSize(sf::Vector2f(PADDLE_WIDTH, PADDLE_HEIGHT));
+    paddle.setFillColor(sf::Color(lilacRose));
+    paddle.setOutlineColor(sf::Color(pinkOrchid));
+    paddle.setOutlineThickness(paddleHeight / 6);
+    paddle.setSize(sf::Vector2f(paddleWidth, paddleHeight));
     paddle.setPosition(position);
-
 }
 
 void Ikah::Paddle::draw(sf::RenderWindow &window)
@@ -35,16 +40,16 @@ void Ikah::Paddle::input(sf::Time dt)
     {
         if (paddle.getPosition().x > 0)
         {
-            velocity.x = -SPEED *  dt.asSeconds();
-            paddle.move(velocity);
+            velocity.x = -SPEED;
+            paddle.move(velocity *  dt.asSeconds());
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        if (paddle.getPosition().x + PADDLE_WIDTH < screenWidth)
+        if (paddle.getPosition().x + paddleWidth < screenWidth)
         {
-            velocity.x = SPEED * dt.asSeconds();
-            paddle.move(velocity);
+            velocity.x = SPEED;
+            paddle.move(velocity * dt.asSeconds());
         }
     }
 }

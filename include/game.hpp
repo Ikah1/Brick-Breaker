@@ -13,9 +13,12 @@ namespace Ikah
         private:
             const int WINDOW_WIDTH = 1000;
             const int WINDOW_HEIGHT = 800;
+
             sf::Clock deltaClock;
             sf::Time dt;
+
             Ikah::Bricks bricksObject;
+            
             std::vector<sf::RectangleShape> bricks;
     };
 }

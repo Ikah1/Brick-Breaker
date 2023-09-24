@@ -21,7 +21,7 @@ namespace Ikah
             sf::Vector2f startingPosition;
             sf::Vector2f velocity;
             const float SPEED = 300.0f;
-            const int BALL_RADIUS = 15;
+            int ballRadius;
             int windowWidth, windowHeight;
     };
 }

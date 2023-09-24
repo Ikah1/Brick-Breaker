@@ -3,18 +3,24 @@
 
 Ikah::Game::Game()
 {   
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Brick-Breaker", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Brick-Breaker");
     window.setFramerateLimit(30);
 
-    bricks = bricksObject.createBricks(10, 5, WINDOW_WIDTH, WINDOW_HEIGHT);
+    //Pass Window Dimensions to brick class and create bricks
+    bricksObject.setScreenDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
+    bricks = bricksObject.createBricks(10, 5);
 
+    //Create Paddle and Ball
     Ikah::Paddle paddle(WINDOW_WIDTH, WINDOW_HEIGHT);
     Ikah::Ball ball(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    //Main Loop
     while (window.isOpen())
     {
+
         sf::Event event;
         dt = deltaClock.restart();
+        //Check For Input Events
         while(window.pollEvent(event))
         {
             //Close Window
@@ -30,7 +36,7 @@ Ikah::Game::Game()
         ball.collision(paddle.getPaddle(), dt);
         ball.brickCollision(bricks);
         //clear display
-        window.clear(sf::Color(BACKGROUND_COLOR));
+        window.clear(sf::Color(spanishRoast));
         //Draw here
         for(int i = 0; i < bricks.size(); i++)
         {

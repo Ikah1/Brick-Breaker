@@ -6,14 +6,19 @@ Ikah::Ball::Ball(int screenWidth, int screenHeight)
     this->windowWidth = screenWidth;
     this->windowHeight = screenHeight;
 
+    ballRadius = screenWidth / 80;
+
     velocity.x = 0;
     velocity.y = 0;
-    startingPosition.x = screenWidth / 2 - BALL_RADIUS;
-    startingPosition.y = screenHeight / 2 - BALL_RADIUS;
 
-    ball.setFillColor(sf::Color(FOREGROUND_COLOR));
+    startingPosition.x = screenWidth / 2 - ballRadius;
+    startingPosition.y = screenHeight / 2 - ballRadius;
+
+    ball.setFillColor(sf::Color(blueCuracao));
+    ball.setOutlineColor(sf::Color(pinkOrchid));
+    ball.setOutlineThickness(ballRadius / 4);
     ball.setPosition(startingPosition);
-    ball.setRadius(BALL_RADIUS);
+    ball.setRadius(ballRadius);
 }
 
 void Ikah::Ball::draw(sf::RenderWindow &window)
@@ -38,19 +43,19 @@ void Ikah::Ball::collision(sf::RectangleShape &paddle, sf::Time dt)
 {
     if (ball.getGlobalBounds().intersects(paddle.getGlobalBounds()))
     {
-        if (ball.getPosition().x >= paddle.getPosition().x && ball.getPosition().x + (ball.getRadius() * 2) <= paddle.getPosition().x + (paddle.getSize().x / 2))
+        if (ball.getPosition().x >= paddle.getPosition().x && ball.getPosition().x + (ballRadius * 2) <= paddle.getPosition().x + (paddle.getSize().x / 2))
         {
             velocity.x = -SPEED;
         }
 
-        if (ball.getPosition().x >= paddle.getPosition().x + (paddle.getSize().x / 2) && ball.getPosition().x + (ball.getRadius() * 2) <= paddle.getPosition().x + paddle.getSize().x)
+        if (ball.getPosition().x >= paddle.getPosition().x + (paddle.getSize().x / 2) && ball.getPosition().x + (ballRadius * 2) <= paddle.getPosition().x + paddle.getSize().x)
         {
             velocity.x = SPEED;
         }
         velocity.y = -velocity.y;
     }
 
-    if (ball.getPosition().x <= 0 || ball.getPosition().x + (ball.getRadius() * 2) >= windowWidth)
+    if (ball.getPosition().x <= 0 || ball.getPosition().x + (ballRadius * 2) >= windowWidth)
     {
         velocity.x = -velocity.x;
     }
@@ -60,7 +65,7 @@ void Ikah::Ball::collision(sf::RectangleShape &paddle, sf::Time dt)
         velocity.y = -velocity.y;
     }
 
-    if (ball.getPosition().y + ball.getRadius() * 2 >= windowHeight)
+    if (ball.getPosition().y + ballRadius * 2 >= windowHeight)
     {
         velocity = sf::Vector2f(0, 0);
         ball.setPosition(startingPosition);
