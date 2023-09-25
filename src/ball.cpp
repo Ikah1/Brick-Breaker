@@ -72,7 +72,7 @@ void Ikah::Ball::collision(sf::RectangleShape &paddle, sf::Time dt)
     }
 }
 
-void Ikah::Ball::brickCollision(std::vector<sf::RectangleShape> &bricks)
+void Ikah::Ball::brickCollision(std::vector<sf::RectangleShape> &bricks, Ikah::Score &score)
 {
     for (int i = 0; i < bricks.size(); i++)
     {
@@ -80,6 +80,7 @@ void Ikah::Ball::brickCollision(std::vector<sf::RectangleShape> &bricks)
         {
             velocity = -velocity;
             bricks.erase(bricks.begin() + i);
+            score.setScore(score.getScore() + 5);
         }
     }
 }
