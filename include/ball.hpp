@@ -13,20 +13,20 @@ namespace Ikah
             void update(sf::Time dt);
             void draw(sf::RenderWindow &window);
             void input(sf::Time dt);
-            void collision(sf::RectangleShape &paddle, sf::Time dt);
+            void collision(sf::RectangleShape &paddle, sf::Time dt, Score &score);
             void brickCollision(std::vector<sf::RectangleShape> &bricks, Ikah::Score &score);
-            void setVelocity(sf::Vector2f velocity);
+            void setBallPosition();
 
-            sf::Vector2f getVelocity();
             sf::CircleShape getBall();
         private:
             sf::CircleShape ball;
+            sf::CircleShape createBall(int windowWidth);
 
             sf::Vector2f startingPosition;
             sf::Vector2f velocity;
 
-            const float SPEED = 300.0f;
-            int ballRadius;
+            const float Y_SPEED = 500.0f;
+            const float X_SPEED = 200.0f;
             int windowWidth, windowHeight;
     };
 }

@@ -19,7 +19,7 @@ namespace Ikah
             int paddleWidth, paddleHeight;
             int screenWidth, screenHeight;
 
-            const float SPEED = 250.0f;
+            const float SPEED = 350.0f;
             float x, y;
 
             bool aPressed, dPressed;

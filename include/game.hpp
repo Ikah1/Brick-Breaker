@@ -3,6 +3,7 @@
 #include "bricks.hpp"
 #include "paddle.hpp"
 #include "ball.hpp"
+#include "roundWon.hpp"
 
 namespace Ikah
 {
@@ -11,7 +12,7 @@ namespace Ikah
         public: 
             Game();
         private:
-            const int WINDOW_WIDTH = 1000;
+            const int WINDOW_WIDTH = 1200;
             const int WINDOW_HEIGHT = 800;
 
             sf::Clock deltaClock;
@@ -20,6 +21,8 @@ namespace Ikah
             Ikah::Bricks bricksObject;
             
             std::vector<sf::RectangleShape> bricks;
+
+            bool wonRound = false;
     };
 }
 #endif

@@ -18,7 +18,9 @@ Ikah::Game::Game()
     Ikah::Score score;
     score.getWindowDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
     score.createScoreText();
-
+    //roundWon
+    Ikah::RoundWon roundWon;
+    roundWon.getWindowDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
     //Background Gradient
     sf::Vertex backgroundGradient[4] = 
     {
@@ -44,11 +46,28 @@ Ikah::Game::Game()
             }
             ball.input(dt);
         }
-        //update here
-        paddle.update(dt);
-        ball.update(dt);
-        ball.collision(paddle.getPaddle(), dt);
-        ball.brickCollision(bricks, score);
+
+        if (!wonRound)
+        {
+            //Check for updates
+            paddle.update(dt);
+            ball.update(dt);
+            //Check for collision
+            ball.collision(paddle.getPaddle(), dt, score);
+            ball.brickCollision(bricks, score);
+            //Check if there are no bricks left
+            roundWon.noBricks(bricks);
+            //Keep score centered
+            score.centerScorePosition();
+        }
+
+        if (roundWon.noBricks(bricks))
+        {
+            wonRound = true;
+            roundWon.setScoreText(score.getScore());
+            roundWon.quit(window);
+            ball.setBallPosition();
+        }
         //clear display
         window.clear();
         window.draw(backgroundGradient, 4, sf::Quads);
@@ -57,9 +76,17 @@ Ikah::Game::Game()
         {
             window.draw(bricks[i]);
         }
-        paddle.draw(window);
-        ball.draw(window);
-        score.draw(window);
+        if (!wonRound)
+        {
+            paddle.draw(window);
+            ball.draw(window);
+            score.draw(window);
+        }
+        
+        if (wonRound)
+        {
+            roundWon.draw(window);
+        }
         //End draw
         window.display();
     }
