@@ -1,5 +1,6 @@
 #ifndef BALL_HPP
 
+#include <SFML/Audio.hpp>
 #include "definitions.hpp"
 #include "score.hpp"
 
@@ -28,6 +29,9 @@ namespace Ikah
             const float Y_SPEED = 500.0f;
             const float X_SPEED = 200.0f;
             int windowWidth, windowHeight;
+
+            sf::SoundBuffer dieBuffer;
+            sf::Sound dieSound;
     };
 }
 

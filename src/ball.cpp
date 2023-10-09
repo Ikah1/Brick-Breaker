@@ -8,6 +8,11 @@ Ikah::Ball::Ball(int screenWidth, int screenHeight)
 
     ball = createBall(windowWidth);
     setBallPosition();
+
+    //creating sfx
+    dieBuffer.loadFromFile("../assets/sounds/die sfx.wav");
+    dieSound.setBuffer(dieBuffer);
+    dieSound.setVolume(85);
 }
 
 void Ikah::Ball::draw(sf::RenderWindow &window) 
@@ -66,6 +71,7 @@ void Ikah::Ball::collision(sf::RectangleShape &paddle, sf::Time dt, Score &score
         if (score.getScore() < 0)
         {
             score.setScore(0);
+            dieSound.play();
         }
     }
 }

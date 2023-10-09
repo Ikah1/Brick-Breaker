@@ -6,6 +6,14 @@ Ikah::Game::Game()
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Brick-Breaker");
     window.setFramerateLimit(30);
 
+    //Background music
+    sf::Music backgroundMusic;
+    backgroundMusic.openFromFile("../assets/sounds/Space Mission.wav");
+    backgroundMusic.setVolume(75);
+    backgroundMusic.setLoop(true);
+    backgroundMusic.play();
+
+
     //Pass Window Dimensions to brick class and create bricks
     bricksObject.setScreenDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
     bricks = bricksObject.createBricks(10, 5);
