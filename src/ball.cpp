@@ -13,6 +13,14 @@ Ikah::Ball::Ball(int screenWidth, int screenHeight)
     dieBuffer.loadFromFile("../assets/sounds/die sfx.wav");
     dieSound.setBuffer(dieBuffer);
     dieSound.setVolume(85);
+
+    bounceSoundBuffer.loadFromFile("../assets/sounds/Bounce.wav");
+    bounceSound.setBuffer(bounceSoundBuffer);
+    bounceSound.setVolume(20);
+
+    breakSoundBuffer.loadFromFile("../assets/sounds/Break.wav");
+    breakSound.setBuffer(breakSoundBuffer);
+    breakSound.setVolume(60);
 }
 
 void Ikah::Ball::draw(sf::RenderWindow &window) 
@@ -50,16 +58,19 @@ void Ikah::Ball::collision(sf::RectangleShape &paddle, sf::Time dt, Score &score
         {
             velocity.x = X_SPEED;
         }
+        bounceSound.play();
     }
     //Check if ball hit either wall on the sides
     if (ball.getPosition().x <= 0 || ball.getPosition().x + (ball.getRadius() * 2) >= windowWidth)
     {
         velocity.x = -velocity.x;
+        bounceSound.play();
     }
     //Check if ball hit top of the screen
     if (ball.getPosition().y <= 0)
     {
         velocity.y = -velocity.y;
+        bounceSound.play();
     }
 
     ///Check if ball left bottom of the screen (missed with the paddle)
@@ -85,6 +96,7 @@ void Ikah::Ball::brickCollision(std::vector<sf::RectangleShape> &bricks, Ikah::S
             velocity.y = -velocity.y;
             bricks.erase(bricks.begin() + i);
             score.setScore(score.getScore() + 5);
+            breakSound.play();
         }
     }
 }

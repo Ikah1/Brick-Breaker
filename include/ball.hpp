@@ -32,6 +32,10 @@ namespace Ikah
 
             sf::SoundBuffer dieBuffer;
             sf::Sound dieSound;
+            sf::SoundBuffer bounceSoundBuffer;
+            sf::Sound bounceSound;
+            sf::SoundBuffer breakSoundBuffer;
+            sf::Sound breakSound;
     };
 }
 

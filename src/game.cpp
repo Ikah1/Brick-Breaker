@@ -9,7 +9,7 @@ Ikah::Game::Game()
     //Background music
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("../assets/sounds/Space Mission.wav");
-    backgroundMusic.setVolume(75);
+    backgroundMusic.setVolume(65);
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
 
