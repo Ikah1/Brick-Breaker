@@ -1,5 +1,4 @@
 #include "../include/paddle.hpp"
-#include <iostream>
 
 Ikah::Paddle::Paddle(int screenWidth, int screenHeight)
 {

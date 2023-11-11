@@ -2,8 +2,7 @@
 
 Ikah::RoundWon::RoundWon()
 {
-    //Load font
-    font.loadFromFile("../assets/fonts/NERDFONT-REGULAR.TTF");
+    
 }
 
 void Ikah::RoundWon::draw(sf::RenderWindow &window)
@@ -86,4 +85,9 @@ void Ikah::RoundWon::setScoreText(int score)
     //Create score text
     scoreText.setString("Your Score is: " + std::to_string(score));
     
+}
+
+void Ikah::RoundWon::getFont(sf::Font &font)
+{
+    this->font = font;
 }

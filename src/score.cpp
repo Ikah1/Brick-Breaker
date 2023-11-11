@@ -3,9 +3,6 @@
 
 void Ikah::Score::createScoreText()
 {
-    //Load Font
-    font.loadFromFile("../assets/fonts/NERDFONT-REGULAR.TTF");
-
     score = 0;
     scorePosition = sf::Vector2f(windowDimensions.x / 2 - scoreText.getGlobalBounds().width / 2, windowDimensions.y - scoreText.getCharacterSize() * 1.2f);
     //Create score text
@@ -43,4 +40,9 @@ int Ikah::Score::getScore()
 void Ikah::Score::getWindowDimensions(int width, int height)
 {
     windowDimensions = sf::Vector2i(width, height);
+}
+
+void Ikah::Score::getFont(sf::Font &font)
+{
+    this->font = font;
 }

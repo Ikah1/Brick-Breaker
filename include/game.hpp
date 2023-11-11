@@ -4,6 +4,7 @@
 #include "paddle.hpp"
 #include "ball.hpp"
 #include "roundWon.hpp"
+#include "settings.hpp"
 
 namespace Ikah
 {
@@ -17,12 +18,14 @@ namespace Ikah
 
             sf::Clock deltaClock;
             sf::Time dt;
-
-            Ikah::Bricks bricksObject;
             
             std::vector<sf::RectangleShape> bricks;
 
             bool wonRound = false;
+            bool displayTitle = true;
+
+            sf::Text title;
+            sf::Text toolTip;
     };
 }
 #endif

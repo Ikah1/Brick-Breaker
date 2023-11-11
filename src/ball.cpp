@@ -12,15 +12,15 @@ Ikah::Ball::Ball(int screenWidth, int screenHeight)
     //creating sfx
     dieBuffer.loadFromFile("../assets/sounds/die sfx.wav");
     dieSound.setBuffer(dieBuffer);
-    dieSound.setVolume(85);
+    dieSound.setVolume(50);
 
     bounceSoundBuffer.loadFromFile("../assets/sounds/Bounce.wav");
     bounceSound.setBuffer(bounceSoundBuffer);
-    bounceSound.setVolume(20);
+    bounceSound.setVolume(50);
 
     breakSoundBuffer.loadFromFile("../assets/sounds/Break.wav");
     breakSound.setBuffer(breakSoundBuffer);
-    breakSound.setVolume(60);
+    breakSound.setVolume(50);
 }
 
 void Ikah::Ball::draw(sf::RenderWindow &window) 
@@ -39,6 +39,7 @@ void Ikah::Ball::input(sf::Time dt)
     {
         //Move the ball towards the paddle if spacebar is pressed
         velocity.y = Y_SPEED;
+        running = true;
     }
 }
 
@@ -121,7 +122,14 @@ sf::CircleShape Ikah::Ball::createBall(int windowWidth)
     return ball;
 }
 
-sf::CircleShape Ikah::Ball::getBall()
+void Ikah::Ball::setSfxVolume(int value)
 {
-    return ball;
+    this->dieSound.setVolume(value);
+    this->bounceSound.setVolume(value);
+    this->breakSound.setVolume(value);
+}
+
+bool Ikah::Ball::setGameRunning()
+{
+    return running;
 }

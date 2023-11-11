@@ -14,6 +14,7 @@ namespace Ikah
             int getScore();
             void getWindowDimensions(int width, int height);
             void centerScorePosition();
+            void getFont(sf::Font &font);
         private:
             sf::Text scoreText;
             sf::Vector2i windowDimensions;

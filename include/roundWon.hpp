@@ -13,6 +13,7 @@ namespace Ikah
             void draw(sf::RenderWindow &window);
             bool noBricks(std::vector<sf::RectangleShape> bricks);
             void getWindowDimensions(int width, int height);
+            void getFont(sf::Font &font);
             void quit(sf::RenderWindow &window);
             void setScoreText(int score);
         private:
