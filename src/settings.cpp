@@ -1,12 +1,22 @@
 #include "../include/settings.hpp"
 #include <iostream>
-
+                                      
 Ikah::Settings::Settings()
 {
-    darkGray = sf::Color(51, 51, 51, 250);
     settingsOpen = false;
     musicVolume = 50;
     sfxVolume = 50;
+    backgroundColor = sf::Color(28, 36, 92);
+
+    if (!quitTexture.loadFromFile("../assets/sprites/button.png"))
+    {
+        std::cout << "Error loading quit button texture." << std::endl;
+    }
+
+    if (!arrowTexture.loadFromFile("../assets/sprites/arrow.png"))
+    {
+        std::cout << "Error loading arrow texture." << std::endl;
+    }
 }
 
 void Ikah::Settings::update(sf::RenderWindow &window)
@@ -18,7 +28,9 @@ void Ikah::Settings::update(sf::RenderWindow &window)
 
     if (settingsOpen)
     {
-        if (mouseOver(window, arrowLine.getPosition().x, arrowLine.getPosition().x + arrowLine.getSize().x, arrowLine.getPosition().y, arrowLine.getPosition().y + arrowLine.getSize().y))
+        float mouseX = sf::Mouse::getPosition(window).x;
+
+        if (mouseOver(window, arrow.getPosition().x, arrow.getPosition().x + arrow.getGlobalBounds().width, arrow.getPosition().y, arrow.getPosition().y + arrow.getGlobalBounds().height))
         {
             if (isLeftMouseButtonPressed())
             {
@@ -30,7 +42,6 @@ void Ikah::Settings::update(sf::RenderWindow &window)
         {
             if (isLeftMouseButtonPressed())
             {
-                int mouseX = sf::Mouse::getPosition(window).x;
                 musicVolumeSlider.setPosition(mouseX, musicVolumeSlider.getPosition().y);
                 updateMusicVolume(musicVolumeSlider.getPosition());
             }
@@ -40,13 +51,12 @@ void Ikah::Settings::update(sf::RenderWindow &window)
         {
             if (isLeftMouseButtonPressed())
             {
-                int mouseX = sf::Mouse::getPosition(window).x;
                 sfxVolumeSlider.setPosition(mouseX, sfxVolumeSlider.getPosition().y);
                 updateSfxVolume(sfxVolumeSlider.getPosition());
             }
         }
 
-        if (mouseOver(window, quitButton.getPosition().x, quitButton.getPosition().x + quitButton.getSize().x, quitButton.getPosition().y, quitButton.getPosition().y + quitButton.getSize().y))
+        if (mouseOver(window, quitButton.getPosition().x, quitButton.getPosition().x + quitButton.getGlobalBounds().width, quitButton.getPosition().y, quitButton.getPosition().y + quitButton.getGlobalBounds().height))
         {
             if (isLeftMouseButtonPressed())
             {
@@ -61,8 +71,7 @@ void Ikah::Settings::draw(sf::RenderWindow &window)
     if(settingsOpen)
     {
         window.draw(guiBackground);
-        window.draw(arrowLine);
-        window.draw(arrowHead);
+        window.draw(arrow);
         window.draw(musicVolumeText);
         window.draw(musicVolumeSliderLine);
         window.draw(musicVolumeSlider);
@@ -73,6 +82,56 @@ void Ikah::Settings::draw(sf::RenderWindow &window)
         window.draw(quitText);
     }
 }
+
+
+void Ikah::Settings::createGUI(int windowWidth, int windowHeight)
+{
+    //Gui background
+    sf::Vector2f backgroundSize(windowWidth / 8, windowHeight / 4);
+    sf::Vector2f backgroundPosition(windowWidth / 2 - backgroundSize.x / 2, windowHeight / 2 - backgroundSize.y / 2);
+
+    guiBackground = createRectangle(backgroundSize.x, backgroundSize.y, backgroundPosition.x, backgroundPosition.y, sf::Color(backgroundColor));
+
+    int backgroundMiddleX = backgroundSize.x  / 2;
+    int guiVerticalSplit = backgroundSize.y / 6;
+
+    //Back arrow
+    arrow.setTexture(arrowTexture);
+    arrow.setScale(0.25f, 0.4f);
+    arrow.setPosition(guiBackground.getPosition().x + 5, guiBackground.getPosition().y + 5);
+
+    float sliderLineWidth = backgroundSize.x * 0.8f;
+    float sliderLineHeight = sliderLineWidth / 10;
+    float sliderRadius = sliderLineHeight / 2;
+
+    //Music volume slider
+    musicVolumeSliderLine = createRectangle(sliderLineWidth, sliderLineHeight, backgroundPosition.x + (backgroundMiddleX - sliderLineWidth / 2), backgroundPosition.y + guiVerticalSplit * 1.5f, sf::Color(mainBlue));
+    musicVolumeSlider.setRadius(sliderRadius);
+    musicVolumeSlider.setPosition(musicVolumeSliderLine.getPosition().x + (sliderLineWidth / 2 - sliderRadius), musicVolumeSliderLine.getPosition().y + (sliderLineHeight / 2 - sliderRadius));
+    musicVolumeSlider.setFillColor(sf::Color(accentColor));
+
+    //Sfx volume slider
+    sfxVolumeSliderLine = createRectangle(sliderLineWidth, sliderLineHeight, backgroundPosition.x + (backgroundMiddleX - sliderLineWidth / 2), backgroundPosition.y + guiVerticalSplit * 2.5f, sf::Color(mainBlue));
+    sfxVolumeSlider.setRadius(sliderRadius);
+    sfxVolumeSlider.setPosition(sfxVolumeSliderLine.getPosition().x + (sliderLineWidth / 2 - sliderRadius), sfxVolumeSliderLine.getPosition().y + (sliderLineHeight / 2 - sliderRadius));
+    sfxVolumeSlider.setFillColor(sf::Color(accentColor));
+
+    //Quit button
+    quitButton.setTexture(quitTexture);
+    quitButton.setScale(0.3f, 0.3f);
+    quitButton.setPosition(backgroundPosition.x + backgroundMiddleX - quitButton.getGlobalBounds().width / 2, backgroundPosition.y + guiVerticalSplit * 4.5f);
+
+    //Music volume text
+    setCommonTextProperties(musicVolumeText, font, guiBackground.getSize().x / 10, "Music Volume", sf::Color(accentColor), sf::Vector2f(musicVolumeSliderLine.getPosition().x, guiBackground.getPosition().y + guiVerticalSplit));
+
+    //Sfx volume text
+    setCommonTextProperties(sfxVolumeText, font, guiBackground.getSize().x / 10, "Sfx volume", sf::Color(accentColor), sf::Vector2f(sfxVolumeSliderLine.getPosition().x, guiBackground.getPosition().y + guiVerticalSplit * 2));
+
+    //Quit text
+    setCommonTextProperties(quitText, font, backgroundSize.x / 6, "Quit", sf::Color(accentColor), sf::Vector2f(quitButton.getPosition().x + (quitButton.getGlobalBounds().width / 6), quitButton.getPosition().y + quitButton.getGlobalBounds().height / 16));
+    quitText.setStyle(sf::Text::Bold);
+    quitText.setLetterSpacing(0.5f);
+} 
 
 bool Ikah::Settings::isLeftMouseButtonPressed()
 {
@@ -91,69 +150,17 @@ bool Ikah::Settings::mouseOverSlider(sf::RenderWindow &window, sf::RectangleShap
     return isMouseOver;
 }
 
-void Ikah::Settings::createGUI(int windowWidth, int windowHeight)
-{
-    //Gui background
-    sf::Vector2f backgroundSize(windowWidth / 8, windowHeight / 4);
-    sf::Vector2f backgroundPosition(windowWidth / 2 - backgroundSize.x / 2, windowHeight / 2 - backgroundSize.y / 2);
-
-    guiBackground = createRectangle(backgroundSize.x, backgroundSize.y, backgroundPosition.x, backgroundPosition.y, sf::Color(darkGray));
-
-    int backgroundMiddleX = backgroundSize.x  / 2;
-    int guiVerticalSplit = backgroundSize.y / 6;
-
-    //Back arrow
-    arrowLine = createRectangle(backgroundSize.x / 10, backgroundSize.y / 60, backgroundPosition.x + 5, backgroundPosition.y + 10, sf::Color(blueCuracao));
-    arrowHead.setFillColor(sf::Color(blueCuracao));
-    arrowHead.setPointCount(3);
-    arrowHead.setRadius(arrowLine.getSize().x / 2);
-    arrowHead.setRotation(-90);
-    arrowLine.setPosition(backgroundPosition.x + backgroundSize.x * 0.1f, backgroundPosition.y + 10);
-    arrowHead.setPosition(arrowLine.getPosition().x - arrowHead.getRadius(), arrowLine.getPosition().y + arrowLine.getSize().y / 2 + arrowHead.getRadius());
-
-    int sliderLineWidth = backgroundSize.x * 0.8f;
-    int sliderLineHeight = sliderLineWidth / 10;
-    int sliderRadius = sliderLineHeight / 2;
-
-    //Music volume slider
-    musicVolumeSliderLine = createRectangle(sliderLineWidth, sliderLineHeight, backgroundPosition.x + (backgroundMiddleX - sliderLineWidth / 2), backgroundPosition.y + guiVerticalSplit * 1.5f, sf::Color(blueCuracao));
-    musicVolumeSlider.setRadius(sliderRadius);
-    musicVolumeSlider.setPosition(musicVolumeSliderLine.getPosition().x + (sliderLineWidth / 2 - sliderRadius), musicVolumeSliderLine.getPosition().y + (sliderLineHeight / 2 - sliderRadius));
-    musicVolumeSlider.setFillColor(sf::Color(pinkOrchid));
-
-    //Sfx volume slider
-    sfxVolumeSliderLine = createRectangle(sliderLineWidth, sliderLineHeight, backgroundPosition.x + (backgroundMiddleX - sliderLineWidth / 2), backgroundPosition.y + guiVerticalSplit * 2.5f, sf::Color(blueCuracao));
-    sfxVolumeSlider.setRadius(sliderRadius);
-    sfxVolumeSlider.setPosition(sfxVolumeSliderLine.getPosition().x + (sliderLineWidth / 2 - sliderRadius), sfxVolumeSliderLine.getPosition().y + (sliderLineHeight / 2 - sliderRadius));
-    sfxVolumeSlider.setFillColor(sf::Color(pinkOrchid));
-
-    //Quit button
-    quitButton = createRectangle(backgroundSize.x / 2, backgroundSize.y / 6, backgroundPosition.x + backgroundMiddleX - backgroundSize.x / 4, backgroundPosition.y + guiVerticalSplit * 4.5f, sf::Color(blueCuracao));
-
-    //Music volume text
-    setCommonTextProperties(musicVolumeText, font, guiBackground.getSize().x / 10, "Music Volume", sf::Color(blueCuracao), sf::Vector2f(musicVolumeSliderLine.getPosition().x, guiBackground.getPosition().y + guiVerticalSplit));
-
-    //Sfx volume text
-    setCommonTextProperties(sfxVolumeText, font, guiBackground.getSize().x / 10, "Sfx volume", sf::Color(blueCuracao), sf::Vector2f(sfxVolumeSliderLine.getPosition().x, guiBackground.getPosition().y + guiVerticalSplit * 2));
-
-    //Quit text
-    setCommonTextProperties(quitText, font, backgroundSize.x / 6, "Quit", sf::Color(pinkOrchid), sf::Vector2f(quitButton.getPosition().x + (quitButton.getSize().x / 6), quitButton.getPosition().y + quitButton.getSize().y / 16));
-    quitText.setStyle(sf::Text::Bold);
-    quitText.setLetterSpacing(0.5f);
-} 
-
+//Sets common text properties
 void Ikah::Settings::setCommonTextProperties(sf::Text& text, const sf::Font& font, int characterSize, const std::string& string, const sf::Color& fillColor, const sf::Vector2f& position)
 {
     text.setFont(font);
     text.setCharacterSize(characterSize);
     text.setString(string);
-    text.setFillColor(fillColor);
+    text.setFillColor(sf::Color(accentColor));
     text.setPosition(position);
 }
 
-/**
- * Checks if the mouse is within a specified area on the window.
- */
+//Checks if the mouse is within a specified area on the window.
 bool Ikah::Settings::mouseOver(sf::RenderWindow& window, float xStart, float xEnd, float yStart, float yEnd)
 {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
@@ -171,9 +178,7 @@ sf::RectangleShape Ikah::Settings::createRectangle(float width, float height, fl
     return rectangle;
 }
 
-/**
- * Updates the music volume based on the position of the music volume slider.
- */
+//Updates the music volume based on the position of the music volume slider.
 void Ikah::Settings::updateMusicVolume(sf::Vector2f position)
 {
     // Calculate the minimum and maximum x positions of the music volume slider line
@@ -187,6 +192,7 @@ void Ikah::Settings::updateMusicVolume(sf::Vector2f position)
     musicVolume = static_cast<int>(percentage * 100);
 }
 
+//Updates the sfx volume based on the position of the sfx volume slider.
 void Ikah::Settings::updateSfxVolume(sf::Vector2f position)
 {
     // Calculate the minimum and maximum x positions of the SFX volume slider line

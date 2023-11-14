@@ -10,9 +10,7 @@ void Ikah::Score::createScoreText()
     scoreText.setString(std::to_string(score));
     scoreText.setCharacterSize(windowDimensions.x / 16);
     scoreText.setPosition(scorePosition);
-    scoreText.setFillColor(sf::Color(blueCuracao));
-    scoreText.setOutlineColor(sf::Color(pinkOrchid));
-    scoreText.setOutlineThickness(scoreText.getCharacterSize() / 16);
+    scoreText.setFillColor(sf::Color(accentColor));
 }
 
 void Ikah::Score::draw(sf::RenderWindow &window)

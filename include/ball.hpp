@@ -15,13 +15,13 @@ namespace Ikah
             void draw(sf::RenderWindow &window);
             void input(sf::Time dt);
             void collision(sf::RectangleShape &paddle, sf::Time dt, Score &score);
-            void brickCollision(std::vector<sf::RectangleShape> &bricks, Ikah::Score &score);
+            void brickCollision(std::vector<sf::Sprite> &bricks, Ikah::Score &score);
             void setBallPosition();
             void setSfxVolume(int value);
             bool setGameRunning();
         private:
-            sf::CircleShape ball;
-            sf::CircleShape createBall(int windowWidth);
+            sf::Sprite ball;
+            sf::Texture ballTexture;
 
             sf::Vector2f startingPosition;
             sf::Vector2f velocity;
@@ -30,6 +30,7 @@ namespace Ikah
             const float X_SPEED = 200.0f;
             int windowWidth, windowHeight;
             bool running = false;
+            bool dead;
 
             sf::SoundBuffer dieBuffer;
             sf::Sound dieSound;

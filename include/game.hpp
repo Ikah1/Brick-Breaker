@@ -19,7 +19,7 @@ namespace Ikah
             sf::Clock deltaClock;
             sf::Time dt;
             
-            std::vector<sf::RectangleShape> bricks;
+            std::vector<sf::Sprite> bricks;
 
             bool wonRound = false;
             bool displayTitle = true;

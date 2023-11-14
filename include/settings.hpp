@@ -30,13 +30,13 @@ namespace Ikah
             void updateSfxVolume(sf::Vector2f position);
             void setCommonTextProperties(sf::Text& text, const sf::Font& font, int characterSize, const std::string& string, const sf::Color& fillColor, const sf::Vector2f& position);
 
-            sf::Color darkGray;
+            sf::Color backgroundColor;
             sf::Font font;
 
             sf::RectangleShape guiBackground;
             //Back arrow
-            sf::RectangleShape arrowLine;
-            sf::CircleShape arrowHead;
+            sf::Sprite arrow;
+            sf::Texture arrowTexture;
             //Volume Sliders
             sf::Text musicVolumeText;
             sf::Text sfxVolumeText;
@@ -45,7 +45,8 @@ namespace Ikah
             sf::RectangleShape sfxVolumeSliderLine;
             sf::CircleShape sfxVolumeSlider;
             //Quit button
-            sf::RectangleShape quitButton;
+            sf::Sprite quitButton;
+            sf::Texture quitTexture;
             sf::Text quitText;
     };
 }

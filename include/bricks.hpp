@@ -9,10 +9,13 @@ namespace Ikah
     class Bricks
     {
         public:
-            std::vector<sf::RectangleShape> createBricks(int rowAmount, int amountOfBricks);
+            Bricks();
+            std::vector<sf::Sprite> createBricks(int rowAmount, int amountOfBricks);
             void setScreenDimensions(int width, int height);
         private:
-            std::vector<sf::RectangleShape> createRow(int amount, int rowNumber);
+            std::vector<sf::Sprite> createRow(int amount, int rowNumber);
+
+            sf::Texture brickTexture;
 
             sf::Vector2i screenDimensions;
     };

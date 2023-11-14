@@ -16,8 +16,8 @@ Ikah::Paddle::Paddle(int screenWidth, int screenHeight)
 
     velocity = sf::Vector2f(0, 0);
 
-    paddle.setFillColor(sf::Color(lilacRose));
-    paddle.setOutlineColor(sf::Color(pinkOrchid));
+    paddle.setFillColor(sf::Color(mainBlue));
+    paddle.setOutlineColor(sf::Color(accentColor));
     paddle.setOutlineThickness(paddleHeight / 6);
     paddle.setSize(sf::Vector2f(paddleWidth, paddleHeight));
     paddle.setPosition(position);

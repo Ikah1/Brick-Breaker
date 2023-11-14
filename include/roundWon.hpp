@@ -11,7 +11,7 @@ namespace Ikah
         public:
             RoundWon();
             void draw(sf::RenderWindow &window);
-            bool noBricks(std::vector<sf::RectangleShape> bricks);
+            bool noBricks(std::vector<sf::Sprite> bricks);
             void getWindowDimensions(int width, int height);
             void getFont(sf::Font &font);
             void quit(sf::RenderWindow &window);

@@ -13,7 +13,7 @@ void Ikah::RoundWon::draw(sf::RenderWindow &window)
     window.draw(scoreText);
 }
 
-bool Ikah::RoundWon::noBricks(std::vector<sf::RectangleShape> bricks)
+bool Ikah::RoundWon::noBricks(std::vector<sf::Sprite> bricks)
 {
     //Return true if there are no bricks left and false if there are and create quit dialog
     if (bricks.size() == 0)
@@ -36,8 +36,8 @@ void Ikah::RoundWon::createDialogBox()
     //Create quit button
     quitButton.setSize(sf::Vector2f(windowWidth / 12, windowHeight / 16));
     quitButton.setPosition(windowWidth / 2 - quitButton.getSize().x / 2, windowHeight / 2 - quitButton.getSize().y / 2);
-    quitButton.setFillColor(sf::Color(lilacRose));
-    quitButton.setOutlineColor(sf::Color(pinkOrchid));
+    quitButton.setFillColor(sf::Color(accentColor));
+    quitButton.setOutlineColor(sf::Color(accentColor));
     quitButton.setOutlineThickness(quitButton.getSize().x / 14);
     
     //Create quit text
@@ -45,26 +45,20 @@ void Ikah::RoundWon::createDialogBox()
     quitText.setString("Quit");
     quitText.setCharacterSize(quitButton.getSize().x / 2.5f);
     quitText.setPosition(quitButton.getPosition().x + quitButton.getSize().x / 2 - quitText.getGlobalBounds().width / 2, quitButton.getPosition().y + quitButton.getSize().y / 2 - quitText.getGlobalBounds().height / 1.25f);
-    quitText.setFillColor(sf::Color(pinkOrchid));
-    quitText.setOutlineColor(sf::Color(blueCuracao));
-    quitText.setOutlineThickness(quitText.getCharacterSize() / 15);
+    quitText.setFillColor(sf::Color(accentColor));
 
     //Create win text
     winText.setFont(font);
     winText.setString("You Win!");
     winText.setCharacterSize(quitButton.getSize().x / 2);
     winText.setPosition(quitButton.getPosition().x + quitButton.getSize().x / 2 - winText.getGlobalBounds().width / 2, quitButton.getPosition().y - winText.getGlobalBounds().height - 50);
-    winText.setFillColor(sf::Color(pinkOrchid));
-    winText.setOutlineColor(sf::Color(blueCuracao));
-    winText.setOutlineThickness(winText.getCharacterSize() / 16);
+    winText.setFillColor(sf::Color(accentColor));
 
     //Create score text
     scoreText.setFont(font);
     scoreText.setCharacterSize(quitButton.getSize().x / 2);
     scoreText.setPosition(windowWidth / 2 - scoreText.getGlobalBounds().width / 2, quitButton.getPosition().y + quitButton.getSize().y + 10);
-    scoreText.setFillColor(sf::Color(pinkOrchid));
-    scoreText.setOutlineColor(sf::Color(blueCuracao));
-    scoreText.setOutlineThickness(scoreText.getCharacterSize() / 16);
+    scoreText.setFillColor(sf::Color(accentColor));
 }
 
 void Ikah::RoundWon::quit(sf::RenderWindow &window)

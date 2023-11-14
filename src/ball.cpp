@@ -6,7 +6,12 @@ Ikah::Ball::Ball(int screenWidth, int screenHeight)
     this->windowWidth = screenWidth;
     this->windowHeight = screenHeight;
 
-    ball = createBall(windowWidth);
+    if (!ballTexture.loadFromFile("../assets/sprites/ball.png"))
+    {
+        std::cout << "failed to load ball texture" << std::endl;
+    }
+    ball.setTexture(ballTexture);
+    ball.setScale(0.25f, 0.25f);
     setBallPosition();
 
     //creating sfx
@@ -21,6 +26,8 @@ Ikah::Ball::Ball(int screenWidth, int screenHeight)
     breakSoundBuffer.loadFromFile("../assets/sounds/Break.wav");
     breakSound.setBuffer(breakSoundBuffer);
     breakSound.setVolume(50);
+
+    dead = true;
 }
 
 void Ikah::Ball::draw(sf::RenderWindow &window) 
@@ -37,58 +44,73 @@ void Ikah::Ball::input(sf::Time dt)
 {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
-        //Move the ball towards the paddle if spacebar is pressed
-        velocity.y = Y_SPEED;
-        running = true;
+        if (dead)
+        {
+            //Move the ball towards the paddle if spacebar is pressed
+            velocity.y = Y_SPEED;
+            running = true;
+            dead = false;
+        }
     }
 }
 
 void Ikah::Ball::collision(sf::RectangleShape &paddle, sf::Time dt, Score &score)
 {
+    float ballPosX = ball.getPosition().x;
+    float ballPosY = ball.getPosition().y;
+    float paddlePosX = paddle.getPosition().x;
+    float ballWidth = ball.getGlobalBounds().width;
+    float ballHeight = ball.getGlobalBounds().height;
+
     //Check if ball is intersecting with paddle
     if (ball.getGlobalBounds().intersects(paddle.getGlobalBounds()))
     {
         velocity.y = -velocity.y;
-        //Check if ball hit left side of the paddle
-        if (ball.getPosition().x >= paddle.getPosition().x && ball.getPosition().x + ball.getRadius() * 2 < paddle.getPosition().x + paddle.getGlobalBounds().width / 2)
+        //Check if the ball hits the left or ride side of the paddle 
+        float paddleWidth = paddle.getGlobalBounds().width;
+        float paddleCenterX = paddlePosX + paddleWidth / 2;
+        float ballCenterX = ballPosX + ballWidth / 2;
+        float difference = ballCenterX - paddleCenterX;
+
+        if (difference < 0)
         {
             velocity.x = -X_SPEED;
         }
-        //Check if ball hit right side of the paddle
-        if (ball.getPosition().x > paddle.getPosition().x + paddle.getGlobalBounds().width / 2 && ball.getPosition().x + (ball.getRadius() * 2) <= paddle.getPosition().x + paddle.getSize().x)
+        else if (difference > 0)
         {
             velocity.x = X_SPEED;
         }
         bounceSound.play();
     }
     //Check if ball hit either wall on the sides
-    if (ball.getPosition().x <= 0 || ball.getPosition().x + (ball.getRadius() * 2) >= windowWidth)
+    if (ballPosX <= 0 || ballPosX + ballWidth >= windowWidth)
     {
         velocity.x = -velocity.x;
         bounceSound.play();
     }
     //Check if ball hit top of the screen
-    if (ball.getPosition().y <= 0)
+    if (ballPosY <= 0)
     {
         velocity.y = -velocity.y;
         bounceSound.play();
     }
 
     ///Check if ball left bottom of the screen (missed with the paddle)
-    if (ball.getPosition().y + ball.getRadius() * 2 >= windowHeight)
+    if (ballPosY + ballHeight >= windowHeight)
     {
+        dead = true;
         velocity = sf::Vector2f(0, 0);
         ball.setPosition(startingPosition);
         score.setScore(score.getScore() - 50);
         if (score.getScore() < 0)
         {
             score.setScore(0);
-            dieSound.play();
         }
+        dieSound.play();
     }
 }
 
-void Ikah::Ball::brickCollision(std::vector<sf::RectangleShape> &bricks, Ikah::Score &score)
+void Ikah::Ball::brickCollision(std::vector<sf::Sprite> &bricks, Ikah::Score &score)
 {
     for (int i = 0; i < bricks.size(); i++)
     {
@@ -105,21 +127,10 @@ void Ikah::Ball::brickCollision(std::vector<sf::RectangleShape> &bricks, Ikah::S
 void Ikah::Ball::setBallPosition()
 {
     //Set starting position in middle of the screen
-    startingPosition = sf::Vector2f(windowWidth / 2 - ball.getRadius(), windowHeight / 2 - ball.getRadius());
+    startingPosition = sf::Vector2f(windowWidth / 2 - ball.getGlobalBounds().width / 2, windowHeight / 2 - ball.getGlobalBounds().height / 2);
     ball.setPosition(startingPosition);
 
     velocity = sf::Vector2f(0, 0);
-}
-
-sf::CircleShape Ikah::Ball::createBall(int windowWidth)
-{
-    sf::CircleShape ball;
-    int ballRadius = windowWidth / 80;
-    ball.setFillColor(sf::Color(blueCuracao));
-    ball.setOutlineColor(sf::Color(pinkOrchid));
-    ball.setOutlineThickness(ballRadius / 4);
-    ball.setRadius(ballRadius);
-    return ball;
 }
 
 void Ikah::Ball::setSfxVolume(int value)
