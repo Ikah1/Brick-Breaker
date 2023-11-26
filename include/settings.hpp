@@ -15,6 +15,7 @@ namespace Ikah
             void createGUI(int windowWidth, int windowHeight);
             int getMusicVolume();
             int getSfxVolume();
+            bool getSettingsOpen();
         private:
             int windowWidth, windowHeight;
             bool settingsOpen;

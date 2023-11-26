@@ -82,16 +82,19 @@ Ikah::Game::Game()
 
         if (!wonRound)
         {
-            //Check for updates
-            paddle.update(dt);
-            ball.update(dt);
-            //Check for collision
-            ball.collision(paddle.getPaddle(), dt, score);
-            ball.brickCollision(bricks, score);
-            //Check if there are no bricks left
-            roundWon.noBricks(bricks);
-            //Keep score centered
-            score.centerScorePosition();
+            if (!settings.getSettingsOpen())
+            {
+                //Check for updates
+                paddle.update(dt);
+                ball.update(dt);
+                //Check for collision
+                ball.collision(paddle.getPaddle(), dt, score);
+                ball.brickCollision(bricks, score);
+                //Check if there are no bricks left
+                roundWon.noBricks(bricks);
+                //Keep score centered
+                score.centerScorePosition();
+            }
             //Settings Menu
             settings.update(window);
             backgroundMusic.setVolume(settings.getMusicVolume());

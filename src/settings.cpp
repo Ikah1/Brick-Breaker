@@ -220,3 +220,8 @@ int Ikah::Settings::getSfxVolume()
 {
     return this->sfxVolume;
 }
+
+bool Ikah::Settings::getSettingsOpen()
+{
+    return this->settingsOpen;
+}
